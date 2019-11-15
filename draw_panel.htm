@@ -1,0 +1,60 @@
+<meta charset="utf-8" />
+<style>
+    #c {
+        border: 1px solid gray;
+        border-radius: 50px;
+    }
+</style>
+<script>
+    let color = null;
+    let draw = false;
+
+    let clean = false;
+    let cleanDown = false;
+
+    let c, ctx;
+    window.onload = function(params) {
+        c = document.querySelector("#c");
+        ctx = c.getContext("2d");
+
+        c.onmousedown = function() {
+            if (!clean)
+            // 如果橡皮没有按下，那么进行绘制操作
+                draw = true;
+            else
+            // 如果橡皮被按下，那么进行擦除操作
+                cleanDown = true;
+
+            ctx.beginPath();
+
+            ctx.strokeStyle = fc.value;
+        }   
+        c.onmousemove = function() {
+            if (draw) {
+                ctx.lineTo(event.offsetX, event.offsetY);
+                ctx.stroke();
+            }
+            if (clean && cleanDown) {
+                ctx.clearRect(event.offsetX - 3, event.offsetY - 3, 7, 7);
+                // ctx.clearRect(event.offsetX, event.offsetY, 7, 7);
+            }
+        }   
+        c.onmouseup = function() {
+            draw = false;
+
+            clean = false;
+
+            cleanDown = false;
+
+            ctx.closePath();
+        }
+
+        eraser.onclick = function() {
+            clean = true;
+        }
+    }
+</script>
+<input id="fc" type="color" value="#0066FF" />
+<img id="eraser" src="eraser.jpg" width="20" />
+<hr />
+<canvas id="c" width="600" height="400"></canvas>
